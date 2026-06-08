@@ -429,9 +429,42 @@ document.getElementById('toggle').onclick=()=>{const h=document.documentElement;
 const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.1});
 document.querySelectorAll('.reveal').forEach(e=>io.observe(e));
 function submitAudit(){
-  const name=document.getElementById('aName').value.trim();
   const box=document.getElementById('auditForm');
-  box.innerHTML=`<div class="confirm"><div class="ck">✓</div><h3>Audit requested${name?', '+name.split(' ')[0]:''}.</h3><p>Thanks — I'll review your site personally and send 3–5 specific findings within 2 working days. Check your inbox (and spam, just in case).</p></div>`;
+  const btn=box.querySelector('button');
+  const note=box.querySelector('.formNote');
+  const name=document.getElementById('aName').value.trim();
+  const email=document.getElementById('aEmail').value.trim();
+  if(!name||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){
+    note.textContent='Please add your name and a valid email.';
+    note.style.color='#e0395e';
+    return;
+  }
+  btn.disabled=true; btn.style.opacity=.6; btn.textContent='Sending…';
+  const data={
+    name:name,
+    business:document.getElementById('aBiz').value.trim(),
+    website:document.getElementById('aSite').value.trim(),
+    email:email,
+    message:document.getElementById('aMsg').value.trim(),
+    _subject:'New free audit request — Streiz Studio'
+  };
+  fetch('https://formspree.io/f/xrevqwnn',{
+    method:'POST',
+    headers:{'Accept':'application/json','Content-Type':'application/json'},
+    body:JSON.stringify(data)
+  }).then(function(r){
+    if(r.ok){
+      box.innerHTML='<div class="confirm"><div class="ck">✓</div><h3>Audit requested'+(name?', '+name.split(' ')[0]:'')+'.</h3><p>Thanks — I\'ll review your site personally and send 3–5 specific findings within 2 working days. Check your inbox (and spam, just in case).</p></div>';
+    } else {
+      btn.disabled=false; btn.style.opacity=1; btn.textContent='Request my free audit →';
+      note.textContent='Something went wrong — please email nazar@streizstudio.com directly.';
+      note.style.color='#e0395e';
+    }
+  }).catch(function(){
+    btn.disabled=false; btn.style.opacity=1; btn.textContent='Request my free audit →';
+    note.textContent='Something went wrong — please email nazar@streizstudio.com directly.';
+    note.style.color='#e0395e';
+  });
 }
 </script>
 </body>
