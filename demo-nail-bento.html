@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lacquer & Bloom — Nail Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fbeee7; --card:#ffffff; --ink:#2b1620; --mut:#8a6a76; --faint:#bda3ab;
+    --pink:#ff2d77; --coral:#ff6f43; --plum:#3a1124; --lilac:#f3d9e6;
+    --grad:linear-gradient(115deg,#ff2d77,#ff6f43);
+    --line:rgba(43,22,32,.1);
+    --serif:"Fraunces",serif; --sans:"Manrope",sans-serif;
+    --shade:#ff5fa2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--cream);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--pink);color:#fff}
+  a{color:inherit;text-decoration:none}
+  .ey{font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .grad-t{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .btn{font-family:var(--sans);font-weight:800;font-size:14px;cursor:pointer;border:none;transition:.3s;border-radius:40px}
+  .btn-pink{background:var(--grad);color:#fff;padding:14px 28px;box-shadow:0 10px 26px rgba(255,45,119,.3)}
+  .btn-pink:hover{transform:translateY(-2px)}
+  .btn-ghost{background:transparent;color:var(--ink);border:2px solid var(--ink);padding:12px 26px}
+  .btn-ghost:hover{background:var(--ink);color:var(--cream)}
+
+  .top{position:sticky;top:0;z-index:30;display:flex;justify-content:space-between;align-items:center;padding:18px 40px;background:rgba(251,238,231,.8);backdrop-filter:blur(12px)}
+  .logo{font-family:var(--serif);font-size:24px;font-weight:600;font-style:italic}
+  .logo b{font-style:normal}.logo b span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  .grid{max-width:1180px;margin:0 auto;padding:26px 40px 80px;display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:118px;gap:16px}
+  .tile{border-radius:26px;padding:30px;position:relative;overflow:hidden;transition:.4s}
+  .tile.lift:hover{transform:translateY(-5px)}
+
+  /* hero tile */
+  .t-hero{grid-column:span 7;grid-row:span 3;background:var(--plum);color:#fff;display:flex;flex-direction:column;justify-content:space-between}
+  .t-hero .blob{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,#ff6f43,transparent 65%);opacity:.5;top:-90px;right:-60px}
+  .t-hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(34px,4.4vw,58px);line-height:.98;position:relative}
+  .t-hero h1 em{font-style:italic;color:#ffb38a}
+  .t-hero p{color:rgba(255,255,255,.78);max-width:340px;margin-top:14px;position:relative}
+  .t-hero .row{display:flex;gap:12px;position:relative}
+  .btn-w{background:#fff;color:var(--pink);border-radius:40px;padding:14px 26px;font-weight:800;font-size:14px;cursor:pointer;border:none;transition:.3s}
+  .btn-w:hover{transform:translateY(-2px)}
+
+  /* shade picker tile */
+  .t-shade{grid-column:span 5;grid-row:span 3;background:var(--card);display:flex;flex-direction:column;box-shadow:0 14px 40px rgba(58,17,36,.07)}
+  .t-shade .lbl{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);font-weight:800;margin-bottom:6px}
+  .t-shade h3{font-family:var(--serif);font-size:24px;font-weight:600;margin-bottom:14px}
+  .hand{flex:1;display:flex;align-items:center;justify-content:center}
+  .hand svg{width:100%;max-width:230px;height:auto}
+  .nailFill{transition:fill .35s ease}
+  .swatches{display:flex;flex-wrap:wrap;gap:9px;margin-top:8px}
+  .sw{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2px solid #fff;box-shadow:0 0 0 1px var(--line);transition:.2s}
+  .sw:hover{transform:scale(1.12)}
+  .sw.on{box-shadow:0 0 0 2px var(--ink);transform:scale(1.12)}
+  .shadeName{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--mut);margin-top:12px}
+
+  /* treatment tiles */
+  .t-svc{grid-column:span 4;grid-row:span 2;background:var(--card);cursor:pointer;box-shadow:0 14px 40px rgba(58,17,36,.06);display:flex;flex-direction:column;justify-content:space-between}
+  .t-svc .ic{width:46px;height:46px;border-radius:14px;background:var(--lilac);display:flex;align-items:center;justify-content:center;font-size:22px}
+  .t-svc h3{font-family:var(--serif);font-size:23px;font-weight:600;margin:16px 0 6px}
+  .t-svc p{color:var(--mut);font-size:13.5px}
+  .t-svc .pr{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+  .t-svc .pr .p{font-family:var(--serif);font-size:24px;font-weight:600}
+  .t-svc .pr .b{font-size:13px;font-weight:800;color:var(--pink)}
+  .t-svc:hover{box-shadow:0 22px 50px rgba(255,45,119,.16)}
+
+  /* photo tiles */
+  .t-ph{grid-column:span 4;grid-row:span 2;background-size:cover;background-position:center}
+  .ph1{background-image:url("https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=600&q=80")}
+  .ph2{grid-row:span 3;background-image:url("https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=600&q=80")}
+  .ph3{background-image:url("https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=600&q=80")}
+
+  /* stat tile */
+  .t-stat{grid-column:span 4;grid-row:span 1;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:space-between}
+  .t-stat .n{font-family:var(--serif);font-size:40px;font-weight:600;line-height:1}
+  .t-stat .l{font-size:12px;text-transform:uppercase;letter-spacing:.1em;opacity:.9;text-align:right}
+
+  /* review tile */
+  .t-rev{grid-column:span 5;grid-row:span 2;background:var(--card);box-shadow:0 14px 40px rgba(58,17,36,.06);display:flex;flex-direction:column;justify-content:center}
+  .t-rev .st{color:var(--pink);letter-spacing:2px;margin-bottom:12px}
+  .t-rev p{font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.4}
+  .t-rev .who{font-size:13px;color:var(--mut);font-weight:700;margin-top:14px}
+
+  /* cta tile */
+  .t-cta{grid-column:span 7;grid-row:span 2;background:var(--ink);color:var(--cream);display:flex;flex-direction:column;justify-content:center}
+  .t-cta h2{font-family:var(--serif);font-weight:500;font-size:clamp(28px,3.4vw,44px);line-height:1.02;margin-bottom:10px}
+  .t-cta h2 em{font-style:italic;color:#ffb38a}
+  .t-cta p{color:rgba(251,238,231,.7);max-width:360px;margin-bottom:20px}
+
+  footer{text-align:center;padding:0 40px 50px;color:var(--faint);font-size:13px;font-weight:600}
+
+  /* MODAL (visual, carries shade) */
+  .ov{position:fixed;inset:0;background:rgba(58,17,36,.5);backdrop-filter:blur(8px);z-index:100;display:none;align-items:center;justify-content:center;padding:24px}
+  .ov.on{display:flex}
+  .modal{background:var(--cream);border-radius:28px;width:100%;max-width:520px;max-height:90vh;overflow:auto}
+  .mh{display:flex;justify-content:space-between;align-items:center;padding:24px 30px;position:sticky;top:0;background:var(--cream);z-index:2}
+  .mh .t{font-family:var(--serif);font-size:22px;font-weight:600}
+  .x{cursor:pointer;border:none;background:#fff;width:34px;height:34px;border-radius:50%;font-size:16px;color:var(--mut)}
+  .pgs{display:flex;gap:8px;padding:0 30px}
+  .pg{flex:1;height:5px;border-radius:5px;background:var(--lilac)}.pg.on{background:var(--grad)}
+  .mb{padding:22px 30px 32px}
+  .mb h3{font-family:var(--serif);font-size:22px;font-weight:600;margin-bottom:4px}
+  .mb .sub{color:var(--mut);font-size:14px;margin-bottom:20px}
+  .chips{display:flex;flex-direction:column;gap:10px}
+  .chip{display:flex;justify-content:space-between;align-items:center;border:2px solid var(--line);border-radius:16px;padding:15px 18px;cursor:pointer;transition:.2s;background:#fff}
+  .chip:hover{border-color:#ffafc8}.chip.sel{border-color:var(--pink);background:#fff5f8}
+  .chip .cn{font-weight:800;font-size:15px}.chip .cs{font-size:12px;color:var(--faint)}
+  .chip .cp{font-family:var(--serif);font-weight:600;font-size:19px}
+  .days{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+  .d{border:2px solid var(--line);border-radius:14px;padding:11px 4px;text-align:center;cursor:pointer;transition:.2s;background:#fff}
+  .d.sel{border-color:var(--pink);background:#fff5f8}.d .dn{font-size:11px;color:var(--faint);font-weight:800;text-transform:uppercase}.d .dd{font-family:var(--serif);font-size:19px;font-weight:600;margin-top:2px}
+  .lbl2{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:800;margin-bottom:10px}
+  .times{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .tm{border:2px solid var(--line);border-radius:12px;padding:10px 4px;text-align:center;cursor:pointer;font-size:13px;font-weight:700;transition:.2s;background:#fff}
+  .tm.sel{border-color:var(--pink);background:#fff5f8;color:var(--pink)}
+  .fld{margin-bottom:14px}.fld label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:800;margin-bottom:6px}
+  .fld input{width:100%;background:#fff;border:2px solid var(--line);border-radius:12px;padding:12px 14px;font-family:var(--sans);font-size:15px}.fld input:focus{outline:none;border-color:var(--pink)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .sm{background:#fff;border-radius:16px;padding:16px;margin-bottom:18px}
+  .sm .r{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;color:var(--mut)}
+  .sm .tt{border-top:1px solid var(--line);margin-top:6px;padding-top:10px;display:flex;justify-content:space-between;font-weight:800}
+  .sm .tt b{font-family:var(--serif);font-size:19px;font-weight:600}
+  .shadeChip{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--mut)}
+  .shadeDot{width:16px;height:16px;border-radius:50%;border:1px solid var(--line)}
+  .full{width:100%;padding:15px}
+  .badge{font-size:10.5px;color:var(--mut);border:1px solid var(--line);border-radius:6px;padding:4px 8px;font-weight:700}
+  .secure{text-align:center;font-size:12px;color:var(--faint);margin-top:12px;font-weight:600}
+  .done{text-align:center;padding:10px 0}
+  .done .ck{width:64px;height:64px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 18px}
+  .done h3{font-size:24px;margin-bottom:6px}
+  .gcal{display:inline-flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:40px;padding:12px 22px;margin-top:8px;font-weight:800;font-size:14px;background:#fff;transition:.2s}
+  .gcal:hover{border-color:var(--pink);color:var(--pink)}.gcal svg{width:18px;height:18px}
+  @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:auto;gap:12px}.tile{grid-column:span 2!important;grid-row:auto!important;min-height:150px;padding:26px;border-radius:22px}.t-stat{grid-column:span 1!important;min-height:96px}.t-hero,.t-shade,.t-cta,.t-svc,.t-rev{min-height:auto}.t-ph{min-height:200px}.top{padding:16px 22px}.grid{padding:22px 22px 60px}.t-hero h1{font-size:clamp(32px,8vw,46px)}}
+  @media(max-width:480px){
+    .top{padding:14px 18px}.grid{padding:18px 18px 50px;gap:10px}.logo{font-size:21px}
+    .btn-pink{padding:12px 20px;font-size:13px}
+    .tile{padding:22px;border-radius:20px}
+    .t-hero p{font-size:14px}.t-rev p{font-size:17px}
+    .t-svc h3,.t-shade h3{font-size:21px}
+    .hand svg{max-width:200px}.sw{width:28px;height:28px}
+    .ov{padding:14px}.modal{border-radius:22px}.mh{padding:20px 22px}.mb{padding:20px 22px 28px}.pgs{padding:0 22px}
+    .days{gap:6px}.times{gap:6px}.tm{padding:10px 2px;font-size:12.5px}.d .dd{font-size:17px}
+    .fld input{font-size:16px}.row2{gap:8px}
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="logo"><b>Lacquer <span>&amp;</span> Bloom</b></div>
+  <button class="btn btn-pink" onclick="openB()">Book Now</button>
+</div>
+
+<div class="grid">
+  <!-- HERO -->
+  <div class="tile t-hero">
+    <div class="blob"></div>
+    <div>
+      <div class="ey" style="color:#ffb38a;-webkit-text-fill-color:#ffb38a">Manchester · Northern Quarter</div>
+      <h1 style="margin-top:14px">Nails worth<br><em>showing off.</em></h1>
+      <p>Colour, shape and shine done properly. Try a shade on the right, then book in a minute.</p>
+    </div>
+    <div class="row"><button class="btn-w" onclick="openB()">Book a treatment</button></div>
+  </div>
+
+  <!-- SHADE PICKER -->
+  <div class="tile t-shade">
+    <div class="lbl">Try a shade</div>
+    <h3>Find your colour.</h3>
+    <div class="hand">
+      <svg viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg">
+        <g fill="#f0d2c4">
+          <rect x="34" y="54" width="20" height="92" rx="10"/>
+          <rect x="62" y="30" width="21" height="116" rx="10"/>
+          <rect x="91" y="22" width="22" height="124" rx="11"/>
+          <rect x="121" y="34" width="21" height="112" rx="10"/>
+          <rect x="150" y="60" width="20" height="86" rx="10"/>
+          <rect x="30" y="120" width="150" height="50" rx="24"/>
+        </g>
+        <g class="nailFill" fill="var(--shade)">
+          <rect x="35" y="52" width="18" height="22" rx="9"/>
+          <rect x="63" y="28" width="19" height="23" rx="9"/>
+          <rect x="92" y="20" width="20" height="24" rx="10"/>
+          <rect x="122" y="32" width="19" height="23" rx="9"/>
+          <rect x="151" y="58" width="18" height="22" rx="9"/>
+        </g>
+        <g fill="rgba(255,255,255,.4)">
+          <rect x="38" y="54" width="5" height="14" rx="2.5"/>
+          <rect x="66" y="30" width="5" height="15" rx="2.5"/>
+          <rect x="95" y="22" width="5" height="16" rx="2.5"/>
+          <rect x="125" y="34" width="5" height="15" rx="2.5"/>
+          <rect x="154" y="60" width="5" height="14" rx="2.5"/>
+        </g>
+      </svg>
+    </div>
+    <div class="swatches" id="sw"></div>
+    <div class="shadeName" id="shadeName">Bloom Pink</div>
+  </div>
+
+  <!-- TREATMENTS -->
+  <div class="tile t-svc lift" onclick="openB('Gel Manicure',32)">
+    <div class="ic">💅</div>
+    <div><h3>Gel Manicure</h3><p>Shaped &amp; finished in long-lasting gel — two weeks of shine.</p></div>
+    <div class="pr"><span class="p grad-t">£32</span><span class="b">Book →</span></div>
+  </div>
+  <div class="tile t-svc lift" onclick="openB('BIAB Overlay',42)">
+    <div class="ic">✨</div>
+    <div><h3>BIAB Overlay</h3><p>Builder gel for strength &amp; length. Our most-requested.</p></div>
+    <div class="pr"><span class="p grad-t">£42</span><span class="b">Book →</span></div>
+  </div>
+
+  <div class="tile t-ph ph1"></div>
+
+  <div class="tile t-svc lift" onclick="openB('Custom Nail Art',55)">
+    <div class="ic">🎨</div>
+    <div><h3>Custom Nail Art</h3><p>Chrome, ombré, hand-painted — designed around you.</p></div>
+    <div class="pr"><span class="p grad-t">£55</span><span class="b">Book →</span></div>
+  </div>
+  <div class="tile t-ph ph2"></div>
+
+  <div class="tile t-stat"><div class="n">4.9★</div><div class="l">320<br>reviews</div></div>
+  <div class="tile t-stat" style="background:var(--plum)"><div class="n grad-t" style="-webkit-text-fill-color:#ffb38a;color:#ffb38a">200+</div><div class="l" style="color:#fff;opacity:.85">shades<br>in studio</div></div>
+
+  <!-- REVIEW -->
+  <div class="tile t-rev">
+    <div class="st">★★★★★</div>
+    <p>"Booked and paid in a minute, picked my shade beforehand, walked in and it matched perfectly. Already rebooked."</p>
+    <div class="who">— Priya K.</div>
+  </div>
+  <div class="tile t-ph ph3" style="grid-row:span 2"></div>
+
+  <!-- CTA -->
+  <div class="tile t-cta">
+    <div class="ey" style="-webkit-text-fill-color:initial">Your seat awaits</div>
+    <h2 style="margin-top:10px">Book your next set <em>today.</em></h2>
+    <p>Pick a treatment, choose your time, pay securely and add it to your calendar.</p>
+    <div><button class="btn btn-pink" onclick="openB()">Book a treatment</button></div>
+  </div>
+</div>
+
+<footer>18 Tib Street, Manchester M4 · Tue–Sun · Demo by Streiz Studio</footer>
+
+<div class="ov" id="ov"><div class="modal">
+  <div class="mh"><div class="t" id="mt">Book Treatment</div><button class="x" onclick="closeB()">✕</button></div>
+  <div class="pgs"><div class="pg on"></div><div class="pg"></div><div class="pg"></div><div class="pg"></div></div>
+  <div class="mb" id="mb"></div>
+</div></div>
+
+<script>
+const SHADES=[['#ff5fa2','Bloom Pink'],['#e0294e','Cherry Lacquer'],['#ff6f43','Coral Crush'],['#c9447a','Mauve Velvet'],['#7b3ff2','Ultraviolet'],['#1f6f6f','Jade'],['#1c1c28','Onyx'],['#e8c39e','Soft Nude'],['#d4af37','Gilded']];
+const swWrap=document.getElementById('sw');
+let curShade=SHADES[0];
+SHADES.forEach((s,i)=>{const b=document.createElement('div');b.className='sw'+(i===0?' on':'');b.style.background=s[0];b.onclick=()=>{document.documentElement.style.setProperty('--shade',s[0]);document.getElementById('shadeName').textContent=s[1];document.querySelectorAll('.sw').forEach(x=>x.classList.remove('on'));b.classList.add('on');curShade=s;};swWrap.appendChild(b);});
+
+const SERVICES=[{n:'Gel Manicure',s:'60 min · 200+ colours',p:32},{n:'BIAB Overlay',s:'75 min · builder gel',p:42},{n:'Custom Nail Art',s:'90 min · hand-painted',p:55},{n:'Luxury Pedicure',s:'60 min · scrub & gel',p:45}];
+const TIMES=['9:30','10:30','11:30','13:00','14:00','15:30','16:30','18:00'];
+let step=1, sel={svc:null,price:0,dayIdx:null,time:null,name:'',email:''};
+function days(){const o=[],nm=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],t=new Date();for(let i=1;i<=8;i++){const d=new Date(t);d.setDate(t.getDate()+i);o.push({label:nm[d.getDay()],date:d.getDate(),full:d});}return o;}
+function openB(n,p){if(n){const f=SERVICES.find(x=>x.n===n);sel.svc=n;sel.price=p||f.p;}step=1;render();document.getElementById('ov').classList.add('on');document.body.style.overflow='hidden';}
+function closeB(){document.getElementById('ov').classList.remove('on');document.body.style.overflow='';}
+document.getElementById('ov').onclick=e=>{if(e.target.id==='ov')closeB();};
+function pgs(){document.querySelectorAll('.pg').forEach((p,i)=>p.classList.toggle('on',i+1<=step));}
+function render(){pgs();const b=document.getElementById('mb'),mt=document.getElementById('mt');
+  if(step===1){mt.textContent='Choose your treatment';b.innerHTML=`<h3>What are you booking?</h3><div class="sub">Shade selected: <span class="shadeChip"><span class="shadeDot" style="background:${curShade[0]}"></span>${curShade[1]}</span></div><div class="chips">${SERVICES.map(s=>`<div class="chip ${sel.svc===s.n?'sel':''}" onclick="pS('${s.n}',${s.p})"><div><div class="cn">${s.n}</div><div class="cs">${s.s}</div></div><div class="cp grad-t">£${s.p}</div></div>`).join('')}</div><button class="btn btn-pink full" style="margin-top:20px" onclick="nx()" ${sel.svc?'':'disabled style="opacity:.4;margin-top:20px"'}>Continue →</button>`;}
+  else if(step===2){mt.textContent='Pick a time';b.innerHTML=`<h3>When suits you?</h3><div class="sub">${sel.svc} · £${sel.price}</div><div class="lbl2">Day</div><div class="days">${days().map((d,i)=>`<div class="d ${sel.dayIdx===i?'sel':''}" onclick="pD(${i})"><div class="dn">${d.label}</div><div class="dd">${d.date}</div></div>`).join('')}</div><div class="lbl2">Time</div><div class="times">${TIMES.map(t=>`<div class="tm ${sel.time===t?'sel':''}" onclick="pT('${t}')">${t}</div>`).join('')}</div><button class="btn btn-pink full" style="margin-top:22px" onclick="nx()" ${sel.time&&sel.dayIdx!=null?'':'disabled style="opacity:.4;margin-top:22px"'}>Continue →</button>`;}
+  else if(step===3){mt.textContent='Details & payment';b.innerHTML=`<h3>Almost there ✨</h3><div class="sub">Free cancellation up to 24h before.</div><div class="fld"><label>Full name</label><input id="iN" value="${sel.name}" placeholder="Jane Doe"></div><div class="fld"><label>Email</label><input id="iE" value="${sel.email}" placeholder="you@email.com"></div><div class="fld"><label>Card number</label><input placeholder="4242 4242 4242 4242"></div><div class="row2"><div class="fld"><label>Expiry</label><input placeholder="MM / YY"></div><div class="fld"><label>CVC</label><input placeholder="123"></div></div><div class="sm"><div class="r"><span>${sel.svc}</span><span>£${sel.price}</span></div><div class="r"><span class="shadeChip"><span class="shadeDot" style="background:${curShade[0]}"></span>${curShade[1]}</span><span></span></div><div class="r"><span>${days()[sel.dayIdx].label} ${days()[sel.dayIdx].date} · ${sel.time}</span><span></span></div><div class="tt"><span>Total</span><b>£${sel.price}</b></div></div><div style="display:flex;gap:8px;margin-bottom:10px"><span class="badge">VISA</span><span class="badge">MASTERCARD</span><span class="badge">APPLE PAY</span></div><button class="btn btn-pink full" onclick="pay()">Pay £${sel.price} & confirm</button><div class="secure">🔒 Demo checkout — no real payment is taken</div>`;}
+  else{const d=days()[sel.dayIdx].full,link=gcal(d,sel.time,sel.svc);mt.textContent='Booked';b.innerHTML=`<div class="done"><div class="ck">✓</div><h3>You're booked in!</h3><div class="sub">Confirmation on its way to ${sel.email||'your email'}.</div><div class="sm" style="text-align:left"><div class="r"><span>Treatment</span><span>${sel.svc}</span></div><div class="r"><span>Shade</span><span class="shadeChip"><span class="shadeDot" style="background:${curShade[0]}"></span>${curShade[1]}</span></div><div class="r"><span>When</span><span>${days()[sel.dayIdx].label} ${days()[sel.dayIdx].date}, ${sel.time}</span></div></div><a class="gcal" href="${link}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Add to Google Calendar</a><div style="margin-top:16px"><button class="btn btn-ghost" onclick="closeB()">Done</button></div></div>`;}
+}
+function pS(n,p){sel.svc=n;sel.price=p;render();}
+function pD(i){sel.dayIdx=i;render();}
+function pT(t){sel.time=t;render();}
+function nx(){if(step===3){sel.name=iN.value;sel.email=iE.value;}step++;render();}
+function pay(){sel.name=document.getElementById('iN').value;sel.email=document.getElementById('iE').value;step=4;render();}
+function gcal(dt,time,title){const[h,m]=time.split(':').map(Number);const s=new Date(dt);s.setHours(h,m,0,0);const e=new Date(s);e.setHours(s.getHours()+1);const f=d=>d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';return`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Lacquer & Bloom — '+title+' ('+curShade[1]+')')}&dates=${f(s)}/${f(e)}&details=${encodeURIComponent('Booked via Lacquer & Bloom (demo by Streiz Studio).')}&location=${encodeURIComponent('18 Tib Street, Manchester M4')}`;}
+</script>
+</body>
+</html>

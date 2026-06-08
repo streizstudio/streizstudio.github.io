@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kane & Crow — The Gentleman's Register</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;0,6..96,800;1,6..96,500;1,6..96,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0a09; --bg2:#15110f; --ink:#f3ece0; --mut:#9c9183; --faint:#615a50;
+    --gold:#c9a44a; --goldS:#e3c878; --line:rgba(243,236,224,.14);
+    --serif:"Bodoni Moda",serif; --sans:"Manrope",sans-serif;
+    --rail:88px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:99;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  ::selection{background:var(--gold);color:#0c0a09}
+  a{color:inherit;text-decoration:none}
+  .kick{font-family:var(--sans);font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold);font-weight:700}
+
+  /* LEFT RAIL */
+  .rail{position:fixed;top:0;left:0;bottom:0;width:var(--rail);border-right:1px solid var(--line);background:var(--bg);z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:26px 0}
+  .rail .mk{font-family:var(--serif);font-weight:700;font-size:15px;letter-spacing:.05em}
+  .rail .vt{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--serif);font-style:italic;font-size:18px;letter-spacing:.18em;color:var(--mut)}
+  .rail .vt b{color:var(--gold);font-style:normal}
+  .rail .bk{writing-mode:vertical-rl;transform:rotate(180deg);font-size:11px;letter-spacing:.28em;text-transform:uppercase;font-weight:700;color:var(--gold);cursor:pointer;border:1px solid var(--line);padding:18px 7px;border-radius:3px;transition:.3s}
+  .rail .bk:hover{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+
+  .page{margin-left:var(--rail)}
+  .pad{padding-left:6vw;padding-right:6vw}
+
+  /* MASTHEAD */
+  .mast{border-bottom:1px solid var(--line);padding:18px 6vw;display:flex;align-items:center;justify-content:space-between;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mut)}
+  .mast .c{font-family:var(--serif);font-style:italic;color:var(--gold);letter-spacing:.05em}
+  .mast-title{text-align:center;border-bottom:3px double var(--line);padding:30px 6vw 26px}
+  .mast-title h1{font-family:var(--serif);font-weight:700;font-size:clamp(40px,7vw,92px);letter-spacing:.04em;line-height:1}
+  .mast-title .sub{font-family:var(--serif);font-style:italic;color:var(--mut);font-size:15px;margin-top:10px;letter-spacing:.04em}
+
+  /* HERO */
+  .hero{display:grid;grid-template-columns:1.5fr 1fr;gap:0;border-bottom:1px solid var(--line)}
+  .hero-l{padding:64px 5vw 64px 6vw;border-right:1px solid var(--line)}
+  .hero-l .no{font-family:var(--serif);font-size:14px;color:var(--gold);letter-spacing:.2em;margin-bottom:18px}
+  .hero-l h2{font-family:var(--serif);font-weight:600;font-size:clamp(38px,4.6vw,68px);line-height:1.02;margin-bottom:26px}
+  .hero-l h2 em{color:var(--gold)}
+  .hero-l .cols{column-count:2;column-gap:34px;color:var(--mut);font-size:15px}
+  .hero-l .cols p:first-child::first-letter{font-family:var(--serif);font-size:62px;float:left;line-height:.74;padding:6px 10px 0 0;color:var(--gold)}
+  .hero-r{background:url("https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800&q=80") center/cover;filter:grayscale(.35) contrast(1.05);min-height:520px}
+
+  /* TICKER */
+  .ticker{border-bottom:1px solid var(--line);overflow:hidden;background:var(--bg2)}
+  .ticker-track{display:flex;gap:54px;padding:13px 0;white-space:nowrap;animation:m 30s linear infinite;font-family:var(--serif);font-style:italic;font-size:17px;color:var(--faint)}
+  .ticker-track b{color:var(--gold);font-style:normal}
+  @keyframes m{to{transform:translateX(-50%)}}
+
+  /* REGISTER (price menu) */
+  .reg{padding:80px 6vw}
+  .sec-h{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:42px}
+  .sec-h h3{font-family:var(--serif);font-weight:600;font-size:clamp(30px,4vw,50px)}
+  .sec-h h3 em{color:var(--gold)}
+  .reg-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 70px}
+  .item{cursor:pointer;padding:18px 0;border-bottom:1px dotted var(--line);transition:.25s}
+  .item:hover{padding-left:10px}
+  .item:hover .iname{color:var(--gold)}
+  .item-top{display:flex;align-items:baseline;justify-content:space-between;gap:14px}
+  .iname{font-family:var(--serif);font-size:24px;font-weight:600;transition:.25s;white-space:nowrap}
+  .leader{flex:1;border-bottom:1px dotted var(--faint);transform:translateY(-5px)}
+  .iprice{font-family:var(--serif);font-size:24px;color:var(--gold)}
+  .idesc{color:var(--mut);font-size:14px;margin-top:6px;max-width:90%}
+
+  /* PULL QUOTE */
+  .pull{padding:90px 12vw;text-align:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg2)}
+  .pull p{font-family:var(--serif);font-style:italic;font-size:clamp(26px,3.4vw,42px);line-height:1.3}
+  .pull p em{color:var(--gold);font-style:normal}
+  .pull .by{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--mut);margin-top:26px}
+
+  /* PLATES (gallery) */
+  .plates{padding:80px 6vw}
+  .plate-grid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:150px;gap:14px}
+  .plate{background-size:cover;background-position:center;filter:grayscale(.3) contrast(1.05);border:1px solid var(--line);position:relative}
+  .plate span{position:absolute;left:14px;bottom:12px;font-family:var(--serif);font-style:italic;font-size:14px;background:rgba(12,10,9,.7);padding:4px 12px}
+  .p1{grid-column:span 4;grid-row:span 2;background-image:url("https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=900&q=80")}
+  .p2{grid-column:span 2;grid-row:span 1;background-image:url("https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&q=80")}
+  .p3{grid-column:span 2;grid-row:span 1;background-image:url("https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=600&q=80")}
+  .p4{grid-column:span 3;grid-row:span 1;background-image:url("https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=700&q=80")}
+  .p5{grid-column:span 3;grid-row:span 1;background-image:url("https://images.unsplash.com/photo-1521490683712-35a1cb235f1c?w=700&q=80")}
+
+  /* RESERVATION (inline) */
+  .resv{padding:84px 6vw;border-top:1px solid var(--line)}
+  .resv-wrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:0;border:1px solid var(--line)}
+  .resv-side{padding:46px 40px;border-right:1px solid var(--line);background:var(--bg2)}
+  .resv-side .no{font-family:var(--serif);font-size:14px;color:var(--gold);letter-spacing:.2em}
+  .resv-side h3{font-family:var(--serif);font-size:38px;font-weight:600;margin:14px 0 16px;line-height:1.05}
+  .resv-side p{color:var(--mut);font-size:15px}
+  .resv-steps{margin-top:40px}
+  .rstep{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--line);color:var(--faint);transition:.3s}
+  .rstep.on{color:var(--ink)}
+  .rstep.done{color:var(--mut)}
+  .rstep .rn{font-family:var(--serif);font-style:italic;font-size:18px;width:24px;flex:none}
+  .rstep.on .rn{color:var(--gold)}
+  .rstep .rt{font-size:14px;font-weight:600}
+  .resv-main{padding:46px 44px;min-height:440px}
+  .lbl{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);font-weight:700;margin-bottom:16px}
+  .opts{display:flex;flex-direction:column}
+  .opt{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:16px 0;border-bottom:1px dotted var(--line);cursor:pointer;transition:.2s}
+  .opt:hover .on-name{color:var(--gold)}
+  .opt.sel .on-name{color:var(--gold)}
+  .opt.sel::before{content:"❯";color:var(--gold);position:absolute;margin-left:-22px}
+  .opt{position:relative}
+  .on-name{font-family:var(--serif);font-size:22px;font-weight:600;transition:.2s}
+  .on-sub{font-size:12.5px;color:var(--faint)}
+  .on-price{font-family:var(--serif);font-size:21px;color:var(--gold)}
+  .days{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:28px}
+  .d{border:1px solid var(--line);padding:14px 4px;text-align:center;cursor:pointer;transition:.2s}
+  .d:hover{border-color:var(--goldS)}
+  .d.sel{border-color:var(--gold);background:rgba(201,164,74,.08)}
+  .d .dn{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.08em}
+  .d .dd{font-family:var(--serif);font-size:22px;margin-top:4px}
+  .times{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .tm{border:1px solid var(--line);padding:12px 4px;text-align:center;cursor:pointer;font-size:14px;transition:.2s}
+  .tm:hover{border-color:var(--goldS)}
+  .tm.sel{border-color:var(--gold);background:rgba(201,164,74,.08);color:var(--gold)}
+  .fld{margin-bottom:18px}
+  .fld label{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:700;margin-bottom:8px}
+  .fld input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--line);padding:10px 0;color:var(--ink);font-family:var(--serif);font-size:18px;transition:.2s}
+  .fld input:focus{outline:none;border-color:var(--gold)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .ticket{border:1px solid var(--line);padding:20px;margin:24px 0}
+  .ticket .tr{display:flex;justify-content:space-between;padding:6px 0;font-size:14px;color:var(--mut)}
+  .ticket .tt{border-top:1px solid var(--line);margin-top:8px;padding-top:12px;display:flex;justify-content:space-between;align-items:baseline}
+  .ticket .tt b{font-family:var(--serif);font-size:22px;color:var(--gold)}
+  .btn{font-family:var(--sans);font-weight:700;font-size:13px;letter-spacing:.04em;cursor:pointer;border:none;transition:.3s;padding:15px 30px;background:var(--gold);color:var(--bg);border-radius:2px}
+  .btn:hover{background:var(--goldS)}
+  .btn.full{width:100%}
+  .btn[disabled]{opacity:.35;cursor:default}
+  .btn-o{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .btn-o:hover{border-color:var(--gold);color:var(--gold);background:transparent}
+  .secure{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:16px}
+  .done h4{font-family:var(--serif);font-size:34px;margin-bottom:10px}
+  .done .ck{font-family:var(--serif);font-size:50px;color:var(--gold);margin-bottom:16px}
+  .gcal{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);padding:13px 22px;margin-top:8px;font-weight:600;font-size:13px;letter-spacing:.04em;transition:.2s}
+  .gcal:hover{border-color:var(--gold);color:var(--gold)}
+  .gcal svg{width:17px;height:17px}
+
+  footer{border-top:3px double var(--line);padding:40px 6vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  footer .lg{font-family:var(--serif);font-size:20px;letter-spacing:.04em;color:var(--ink);text-transform:none}
+
+  .reveal{opacity:0;transform:translateY(26px);transition:.8s cubic-bezier(.16,1,.3,1)}
+  .reveal.in{opacity:1;transform:none}
+  @media(max-width:1000px){
+    :root{--rail:0px}.rail{display:none}.hero{grid-template-columns:1fr}.hero-r{min-height:300px;order:-1}
+    .hero-l{border-right:none;padding:48px 6vw}.reg-grid{grid-template-columns:1fr;gap:0}.plate-grid{grid-template-columns:repeat(2,1fr)}
+    .p1,.p2,.p3,.p4,.p5{grid-column:span 2;grid-row:span 1}.resv-wrap{grid-template-columns:1fr}.resv-side{border-right:none;border-bottom:1px solid var(--line)}.hero-l .cols{column-count:1}
+    .pull{padding:64px 8vw}.resv-main{padding:36px 6vw}.resv-side{padding:40px 6vw}
+  }
+  @media(max-width:600px){
+    .mast{flex-wrap:wrap;justify-content:center;gap:6px 16px;text-align:center;font-size:10.5px;padding:14px 6vw}
+    .mast .c{flex-basis:100%;order:-1;font-size:14px}
+    .mast-title{padding:24px 6vw 22px}
+    .hero-l{padding:38px 6vw}.hero-l h2{font-size:clamp(30px,8vw,40px)}
+    .reg,.plates,.resv{padding:60px 6vw}
+    .plate-grid{grid-auto-rows:130px}
+    .sec-h{flex-direction:column;align-items:flex-start;gap:8px}
+    .item-top{flex-wrap:wrap;gap:4px 12px}.leader{min-width:30px}
+    .iname,.iprice{font-size:21px}
+    .days{grid-template-columns:repeat(4,1fr);gap:8px}.times{grid-template-columns:repeat(4,1fr);gap:8px}
+    .d .dd{font-size:18px}.tm{font-size:13px;padding:11px 2px}
+    .fld input{font-size:16px}
+    .row2{grid-template-columns:1fr 1fr;gap:14px}
+    .pull{padding:54px 7vw}.pull p{font-size:23px}
+    footer{flex-direction:column;text-align:center;gap:12px}
+  }
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="mk">K&amp;C</div>
+  <div class="vt">Kane <b>&amp;</b> Crow</div>
+  <div class="bk" onclick="goBook()">Reserve</div>
+</div>
+
+<div class="page">
+  <div class="mast">
+    <div>Shoreditch · London E2</div>
+    <div class="c">The Gentleman's Register</div>
+    <div>Vol. XI · Est. 2014</div>
+  </div>
+  <div class="mast-title">
+    <h1>KANE &amp; CROW</h1>
+    <div class="sub">Master Barbers — by appointment &amp; by walk-in</div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-l">
+      <div class="no">No. 01 — The House</div>
+      <h2>The cut that <em>commands</em> the room.</h2>
+      <div class="cols">
+        <p>A barbershop built for men who understand that the details decide everything — the line of a fade, the finish of a hot towel, the unhurried half-hour that the rest of the week never allows.</p>
+        <p>No conveyor belt. No upsell. A master barber, a proper chair, and a result you walk out wearing like a good suit. Book your time below and pay before you arrive.</p>
+      </div>
+    </div>
+    <div class="hero-r"></div>
+  </div>
+
+  <div class="ticker"><div class="ticker-track">
+    <b>✦</b> Hot Towel Shaves <b>✦</b> Straight Razor Finish <b>✦</b> Open Seven Days <b>✦</b> Online Booking &amp; Payment <b>✦</b> Hot Towel Shaves <b>✦</b> Straight Razor Finish <b>✦</b> Open Seven Days <b>✦</b> Online Booking &amp; Payment <b>✦</b>
+  </div></div>
+
+  <div class="reg reveal">
+    <div class="sec-h"><h3>The <em>Register</em></h3><div class="kick">No. 02 — Services</div></div>
+    <div class="reg-grid">
+      <div class="item" onclick="goBook('Signature Cut')"><div class="item-top"><span class="iname">Signature Cut</span><span class="leader"></span><span class="iprice">£38</span></div><div class="idesc">Consultation, tailored cut, hot-towel finish &amp; styling. The standard.</div></div>
+      <div class="item" onclick="goBook('Beard Sculpt')"><div class="item-top"><span class="iname">Beard Sculpt</span><span class="leader"></span><span class="iprice">£26</span></div><div class="idesc">Shaped and lined with a straight razor, hot towel &amp; oil to close.</div></div>
+      <div class="item" onclick="goBook('The Full Service')"><div class="item-top"><span class="iname">The Full Service</span><span class="leader"></span><span class="iprice">£58</span></div><div class="idesc">Cut, beard and hot-towel shave in one unhurried session.</div></div>
+      <div class="item" onclick="goBook('Skin Fade')"><div class="item-top"><span class="iname">Skin Fade</span><span class="leader"></span><span class="iprice">£34</span></div><div class="idesc">Precision graduated fade, finished sharp to the skin.</div></div>
+    </div>
+  </div>
+
+  <div class="pull reveal">
+    <p>"You don't notice a good barber. You notice how everyone else <em>treats you</em> after one."</p>
+    <div class="by">— The House Maxim</div>
+  </div>
+
+  <div class="plates reveal">
+    <div class="sec-h"><h3>The <em>Plates</em></h3><div class="kick">No. 03 — The Work</div></div>
+    <div class="plate-grid">
+      <div class="plate p1"><span>Signature finish</span></div>
+      <div class="plate p2"><span>The fade</span></div>
+      <div class="plate p3"><span>Straight razor</span></div>
+      <div class="plate p4"><span>Hot towel</span></div>
+      <div class="plate p5"><span>The detail</span></div>
+    </div>
+  </div>
+
+  <div class="resv reveal" id="resv">
+    <div class="sec-h"><h3>Reserve a <em>Chair</em></h3><div class="kick">No. 04 — Booking</div></div>
+    <div class="resv-wrap">
+      <div class="resv-side">
+        <div class="no">By Appointment</div>
+        <h3>Booked in under a minute.</h3>
+        <p>Choose your service, set your time, settle the bill and add it to your calendar.</p>
+        <div class="resv-steps" id="rsteps">
+          <div class="rstep on"><span class="rn">i.</span><span class="rt">Choose your service</span></div>
+          <div class="rstep"><span class="rn">ii.</span><span class="rt">Set the time</span></div>
+          <div class="rstep"><span class="rn">iii.</span><span class="rt">Details &amp; payment</span></div>
+          <div class="rstep"><span class="rn">iv.</span><span class="rt">Confirmed</span></div>
+        </div>
+      </div>
+      <div class="resv-main" id="rmain"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="lg">Kane &amp; Crow</div>
+    <div>42 Redchurch Street · London E2 · Open 9–7 Daily</div>
+    <div>Demo by Streiz Studio</div>
+  </footer>
+</div>
+
+<script>
+const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('in')),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(e=>io.observe(e));
+const SERVICES=[{n:'Signature Cut',s:'45 min · hot towel',p:38},{n:'Beard Sculpt',s:'30 min · straight razor',p:26},{n:'The Full Service',s:'75 min · cut, beard & shave',p:58},{n:'Skin Fade',s:'40 min · precision fade',p:34}];
+const TIMES=['9:30','10:15','11:00','12:30','14:00','15:15','16:00','17:30'];
+let step=1, sel={svc:null,price:0,dayIdx:null,time:null,name:'',email:''};
+function days(){const o=[],nm=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],t=new Date();for(let i=1;i<=8;i++){const d=new Date(t);d.setDate(t.getDate()+i);o.push({label:nm[d.getDay()],date:d.getDate(),full:d});}return o;}
+function goBook(name){if(name){const f=SERVICES.find(x=>x.n===name);sel.svc=name;sel.price=f.p;}render();document.getElementById('resv').scrollIntoView({behavior:'smooth'});}
+function steps(){document.querySelectorAll('#rsteps .rstep').forEach((el,i)=>{el.classList.toggle('on',i+1===step);el.classList.toggle('done',i+1<step);});}
+function render(){steps();const m=document.getElementById('rmain');
+  if(step===1){m.innerHTML=`<div class="lbl">i. Choose your service</div><div class="opts">${SERVICES.map(s=>`<div class="opt ${sel.svc===s.n?'sel':''}" onclick="pS('${s.n}',${s.p})"><div><div class="on-name">${s.n}</div><div class="on-sub">${s.s}</div></div><div class="on-price">£${s.p}</div></div>`).join('')}</div><div style="margin-top:30px"><button class="btn" onclick="nx()" ${sel.svc?'':'disabled'}>Continue →</button></div>`;}
+  else if(step===2){m.innerHTML=`<div class="lbl">ii. Choose a day</div><div class="days">${days().map((d,i)=>`<div class="d ${sel.dayIdx===i?'sel':''}" onclick="pD(${i})"><div class="dn">${d.label}</div><div class="dd">${d.date}</div></div>`).join('')}</div><div class="lbl">Available times</div><div class="times">${TIMES.map(t=>`<div class="tm ${sel.time===t?'sel':''}" onclick="pT('${t}')">${t}</div>`).join('')}</div><div style="margin-top:30px;display:flex;gap:12px"><button class="btn btn-o" onclick="bk()">← Back</button><button class="btn" onclick="nx()" ${sel.time&&sel.dayIdx!=null?'':'disabled'}>Continue →</button></div>`;}
+  else if(step===3){m.innerHTML=`<div class="lbl">iii. Details &amp; payment</div><div class="fld"><label>Full name</label><input id="iN" value="${sel.name}" placeholder="John Smith"></div><div class="fld"><label>Email</label><input id="iE" value="${sel.email}" placeholder="you@email.com"></div><div class="fld"><label>Card number</label><input placeholder="4242 4242 4242 4242"></div><div class="row2"><div class="fld"><label>Expiry</label><input placeholder="MM / YY"></div><div class="fld"><label>CVC</label><input placeholder="123"></div></div><div class="ticket"><div class="tr"><span>${sel.svc}</span><span>£${sel.price}</span></div><div class="tr"><span>${days()[sel.dayIdx].label} ${days()[sel.dayIdx].date} · ${sel.time}</span><span></span></div><div class="tt"><span>Total today</span><b>£${sel.price}</b></div></div><div style="display:flex;gap:12px"><button class="btn btn-o" onclick="bk()">← Back</button><button class="btn" onclick="pay()">Pay £${sel.price} &amp; reserve</button></div><div class="secure">🔒 Demo checkout — no real payment is taken</div>`;}
+  else{const d=days()[sel.dayIdx].full,link=gcal(d,sel.time,sel.svc);m.innerHTML=`<div class="done"><div class="ck">✦</div><h4>Your chair is reserved.</h4><p style="color:var(--mut)">Confirmation on its way to ${sel.email||'your email'}.</p><div class="ticket"><div class="tr"><span>${sel.svc}</span><span>£${sel.price}</span></div><div class="tr"><span>${days()[sel.dayIdx].label} ${days()[sel.dayIdx].date}, ${sel.time}</span><span>Paid</span></div></div><a class="gcal" href="${link}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Add to Google Calendar</a></div>`;}
+}
+function pS(n,p){sel.svc=n;sel.price=p;render();}
+function pD(i){sel.dayIdx=i;render();}
+function pT(t){sel.time=t;render();}
+function nx(){if(step===3){sel.name=iN.value;sel.email=iE.value;}step++;render();}
+function bk(){step--;render();}
+function pay(){sel.name=document.getElementById('iN').value;sel.email=document.getElementById('iE').value;step=4;render();}
+function gcal(dt,time,title){const[h,mm]=time.split(':').map(Number);const s=new Date(dt);s.setHours(h,mm,0,0);const e=new Date(s);e.setHours(s.getHours()+1);const f=d=>d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';return`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Kane & Crow — '+title)}&dates=${f(s)}/${f(e)}&details=${encodeURIComponent('Booked via Kane & Crow (demo by Streiz Studio).')}&location=${encodeURIComponent('42 Redchurch Street, London E2')}`;}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apex Detail — Instant Quote & Booking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#06090e; --bg2:#0b1119; --bg3:#111a26; --pan:#0e1620;
+    --ink:#eaf2fb; --mut:#7f8da0; --faint:#4d596a;
+    --cyan:#22e6e6; --blue:#2d8cff; --grad:linear-gradient(120deg,#22e6e6,#2d8cff);
+    --line:rgba(234,242,251,.1); --ok:#37e6a4;
+    --disp:"Sora",sans-serif; --sans:"Manrope",sans-serif; --mono:"JetBrains Mono",monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;opacity:.25;mask-image:radial-gradient(circle at 80% 0,#000,transparent 75%)}
+  ::selection{background:var(--cyan);color:#06090e}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 44px;position:relative;z-index:2}
+  .mono{font-family:var(--mono)}
+  .ey{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan)}
+
+  nav{position:sticky;top:0;z-index:40;padding:16px 0;background:rgba(6,9,14,.7);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between}
+  .logo{font-family:var(--disp);font-weight:800;font-size:20px;letter-spacing:-.02em;display:flex;align-items:center;gap:9px}
+  .logo .mk{width:10px;height:10px;border-radius:50%;background:var(--grad);box-shadow:0 0 14px var(--cyan)}
+  .nav-r{display:flex;align-items:center;gap:24px}
+  .nav-r .stat{font-family:var(--mono);font-size:12px;color:var(--mut)}
+  .nav-r .stat b{color:var(--cyan)}
+  .btn{font-family:var(--sans);font-weight:700;font-size:14px;cursor:pointer;border:none;transition:.25s}
+  .btn-cy{background:var(--grad);color:#04121a;padding:12px 24px;border-radius:7px;box-shadow:0 8px 22px rgba(34,230,230,.2)}
+  .btn-cy:hover{transform:translateY(-2px)}
+  .btn-cy[disabled]{opacity:.35;cursor:default;transform:none;box-shadow:none}
+  .btn-o{background:transparent;color:var(--ink);border:1px solid var(--line);padding:11px 23px;border-radius:7px}
+  .btn-o:hover{border-color:var(--cyan);color:var(--cyan)}
+
+  /* HERO */
+  header{padding:60px 0 40px}
+  .hero{display:grid;grid-template-columns:1fr 1.05fr;gap:48px;align-items:center}
+  .hero h1{font-family:var(--disp);font-weight:800;font-size:clamp(40px,5.2vw,76px);line-height:.98;letter-spacing:-.03em;margin:18px 0}
+  .hero h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{color:var(--mut);font-size:17px;max-width:430px;margin-bottom:26px}
+  .hero .row{display:flex;gap:12px}
+
+  /* BEFORE / AFTER */
+  .ba{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);aspect-ratio:4/3;user-select:none;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+  .ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+  .ba .after{clip-path:inset(0 0 0 50%)}
+  .ba .tagA,.ba .tagB{position:absolute;top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:5px 11px;border-radius:5px;background:rgba(6,9,14,.78);z-index:3}
+  .ba .tagA{left:14px;color:var(--faint)}
+  .ba .tagB{right:14px;color:var(--cyan)}
+  .ba .handle{position:absolute;top:0;bottom:0;width:2px;background:var(--cyan);left:50%;z-index:4;box-shadow:0 0 16px var(--cyan)}
+  .ba .knob{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;border-radius:50%;background:var(--bg);border:2px solid var(--cyan);z-index:5;display:flex;align-items:center;justify-content:center;cursor:ew-resize;box-shadow:0 0 18px rgba(34,230,230,.5)}
+  .ba .knob::before{content:"⟷";color:var(--cyan);font-size:16px}
+  .ba .hint{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:11px;color:var(--mut);background:rgba(6,9,14,.7);padding:5px 12px;border-radius:5px;z-index:3}
+
+  /* CONFIGURATOR */
+  .conf{padding:30px 0 80px}
+  .conf-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:32px}
+  .conf-head h2{font-family:var(--disp);font-weight:700;font-size:clamp(28px,3.4vw,44px);letter-spacing:-.02em}
+  .conf-head h2 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .conf-grid{display:grid;grid-template-columns:1.4fr .9fr;gap:24px;align-items:start}
+  .panel{background:var(--pan);border:1px solid var(--line);border-radius:14px;padding:28px}
+  .block{margin-bottom:30px}
+  .block:last-child{margin-bottom:0}
+  .block .bl{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:14px;display:flex;justify-content:space-between}
+  .seg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .opt{border:1px solid var(--line);border-radius:9px;padding:14px 10px;cursor:pointer;transition:.2s;background:var(--bg)}
+  .opt:hover{border-color:rgba(34,230,230,.4)}
+  .opt.sel{border-color:var(--cyan);background:rgba(34,230,230,.07)}
+  .opt .ot{font-weight:700;font-size:14px}
+  .opt .os{font-family:var(--mono);font-size:11px;color:var(--mut);margin-top:3px}
+  .opt.sel .os{color:var(--cyan)}
+  .pkgs{display:flex;flex-direction:column;gap:10px}
+  .pkg{border:1px solid var(--line);border-radius:11px;padding:16px 18px;cursor:pointer;transition:.2s;background:var(--bg);display:flex;justify-content:space-between;align-items:center}
+  .pkg:hover{border-color:rgba(34,230,230,.4)}
+  .pkg.sel{border-color:var(--cyan);background:rgba(34,230,230,.06)}
+  .pkg .pn{font-family:var(--disp);font-weight:700;font-size:18px}
+  .pkg .ps{font-size:13px;color:var(--mut)}
+  .pkg .pp{font-family:var(--disp);font-weight:700;font-size:20px;color:var(--cyan)}
+  .addons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .add{border:1px solid var(--line);border-radius:9px;padding:13px 14px;cursor:pointer;transition:.2s;background:var(--bg);display:flex;align-items:center;gap:11px}
+  .add:hover{border-color:rgba(34,230,230,.4)}
+  .add.sel{border-color:var(--cyan);background:rgba(34,230,230,.06)}
+  .box{width:18px;height:18px;border-radius:5px;border:1px solid var(--faint);flex:none;display:flex;align-items:center;justify-content:center;transition:.2s}
+  .add.sel .box{background:var(--grad);border-color:transparent;color:#04121a;font-size:12px}
+  .add .an{font-size:13.5px;font-weight:600}
+  .add .ap{font-family:var(--mono);font-size:12px;color:var(--cyan);margin-left:auto}
+
+  /* TICKET */
+  .ticket{background:var(--pan);border:1px solid var(--line);border-radius:14px;padding:26px;position:sticky;top:90px;overflow:hidden}
+  .ticket::before{content:"";position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(34,230,230,.18),transparent 70%)}
+  .ticket .tl{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);position:relative}
+  .ticket .tr{display:flex;justify-content:space-between;font-size:13.5px;padding:9px 0;border-bottom:1px dashed var(--line);color:var(--mut);position:relative}
+  .ticket .tr span:last-child{color:var(--ink);font-family:var(--mono)}
+  .ticket .total{margin-top:18px;display:flex;justify-content:space-between;align-items:flex-end;position:relative}
+  .ticket .total .lab{font-size:12px;color:var(--mut);font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase}
+  .ticket .total .amt{font-family:var(--disp);font-weight:800;font-size:46px;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .ticket .note{font-family:var(--mono);font-size:11px;color:var(--faint);margin:14px 0 18px;position:relative}
+  .pulse{animation:pulse .4s ease}
+  @keyframes pulse{0%{transform:scale(1)}40%{transform:scale(1.06)}100%{transform:scale(1)}}
+
+  /* HUD STATS */
+  .hud{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg2)}
+  .hud-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}
+  .hcell{background:var(--bg2);padding:34px 28px}
+  .hcell .n{font-family:var(--disp);font-weight:800;font-size:40px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hcell .l{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-top:6px}
+
+  /* REVIEWS */
+  .rev-sec{padding:80px 0}
+  .revs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .rev{border:1px solid var(--line);border-radius:12px;padding:26px;background:var(--pan)}
+  .rev .s{color:var(--cyan);letter-spacing:2px;font-size:13px;margin-bottom:12px}
+  .rev p{font-size:14.5px;margin-bottom:14px}
+  .rev .w{font-family:var(--mono);font-size:11px;color:var(--mut)}
+
+  footer{border-top:1px solid var(--line);padding:40px 0;background:var(--bg2)}
+  .foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;font-family:var(--mono);font-size:12px;color:var(--faint)}
+
+  /* DRAWER (booking) */
+  .scrim{position:fixed;inset:0;background:rgba(3,6,10,.7);backdrop-filter:blur(6px);z-index:100;opacity:0;pointer-events:none;transition:.3s}
+  .scrim.on{opacity:1;pointer-events:auto}
+  .drawer{position:fixed;top:0;right:0;bottom:0;width:440px;max-width:92vw;background:var(--bg2);border-left:1px solid var(--line);z-index:101;transform:translateX(100%);transition:.4s cubic-bezier(.16,1,.3,1);overflow-y:auto;box-shadow:-40px 0 80px rgba(0,0,0,.5)}
+  .drawer.on{transform:none}
+  .dh{display:flex;justify-content:space-between;align-items:center;padding:22px 26px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg2);z-index:2}
+  .dh .t{font-family:var(--disp);font-weight:700;font-size:18px}
+  .x{cursor:pointer;color:var(--mut);background:none;border:none;font-size:20px}
+  .dsteps{display:flex;gap:6px;padding:16px 26px 0}
+  .dsteps .s{flex:1;height:3px;border-radius:3px;background:var(--bg3)}.dsteps .s.on{background:var(--grad)}
+  .db{padding:22px 26px 30px}
+  .db h3{font-family:var(--disp);font-size:19px;font-weight:700;margin-bottom:4px}
+  .db .sub{color:var(--mut);font-size:13.5px;margin-bottom:20px}
+  .days{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
+  .d{border:1px solid var(--line);border-radius:8px;padding:11px 4px;text-align:center;cursor:pointer;transition:.2s;background:var(--bg)}
+  .d.sel{border-color:var(--cyan);background:rgba(34,230,230,.06)}.d .dn{font-family:var(--mono);font-size:10px;color:var(--faint);text-transform:uppercase}.d .dd{font-family:var(--disp);font-weight:700;font-size:18px;margin-top:2px}
+  .lb2{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+  .times{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .tm{border:1px solid var(--line);border-radius:7px;padding:11px 4px;text-align:center;cursor:pointer;font-size:13px;font-weight:600;transition:.2s;background:var(--bg)}
+  .tm.sel{border-color:var(--cyan);background:rgba(34,230,230,.06);color:var(--cyan)}
+  .fld{margin-bottom:14px}.fld label{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+  .fld input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;color:var(--ink);font-family:var(--sans);font-size:15px}.fld input:focus{outline:none;border-color:var(--cyan)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .qsum{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:16px}
+  .qsum .qr{display:flex;justify-content:space-between;font-size:13px;color:var(--mut);padding:5px 0}
+  .qsum .qt{border-top:1px solid var(--line);margin-top:6px;padding-top:10px;display:flex;justify-content:space-between;font-weight:700}
+  .qsum .qt b{font-family:var(--disp);color:var(--cyan);font-size:19px}
+  .badge{font-family:var(--mono);font-size:10px;color:var(--mut);border:1px solid var(--line);border-radius:5px;padding:4px 8px}
+  .full{width:100%;padding:14px;border-radius:7px}
+  .secure{text-align:center;font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:12px}
+  .done{text-align:center;padding:10px 0}
+  .done .ck{width:60px;height:60px;border-radius:50%;background:rgba(34,230,230,.1);border:1px solid var(--cyan);color:var(--cyan);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 16px}
+  .done h3{font-size:22px;margin-bottom:6px}
+  .gcal{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:8px;padding:12px 20px;margin-top:8px;font-weight:700;font-size:14px;background:var(--bg);transition:.2s}
+  .gcal:hover{border-color:var(--cyan);color:var(--cyan)}.gcal svg{width:18px;height:18px}
+  @media(max-width:900px){.hero{grid-template-columns:1fr;gap:30px}.conf-grid{grid-template-columns:1fr}.ticket{position:static}.hud-grid{grid-template-columns:repeat(2,1fr)}.revs{grid-template-columns:1fr}.addons{grid-template-columns:1fr}.nav-r .stat{display:none}.wrap{padding:0 22px}header{padding:44px 0 30px}.conf{padding:24px 0 64px}.rev-sec{padding:64px 0}}
+  @media(max-width:520px){
+    .wrap{padding:0 18px}nav{padding:12px 0}.logo{font-size:18px}
+    .btn-cy{padding:11px 18px;font-size:13px}
+    .hero h1{font-size:clamp(34px,9vw,46px);margin:14px 0}.hero p{font-size:15.5px}
+    .hero .row{flex-direction:column}.hero .row .btn{width:100%;text-align:center;justify-content:center}
+    .conf-head{flex-direction:column;align-items:flex-start;gap:8px}.conf-head h2{font-size:28px}
+    .panel{padding:22px}.seg{grid-template-columns:repeat(2,1fr)}
+    .hud-grid{grid-template-columns:repeat(2,1fr)}.hcell{padding:26px 20px}.hcell .n{font-size:34px}
+    .ticket .total .amt{font-size:40px}
+    .drawer{width:100%;max-width:100%}.db{padding:20px 20px 28px}.dh{padding:18px 20px}.dsteps{padding:14px 20px 0}
+    .times{grid-template-columns:repeat(3,1fr)}.fld input{font-size:16px}.row2{gap:8px}
+    .ba .knob{width:38px;height:38px}
+  }
+</style>
+</head>
+<body>
+
+<nav><div class="wrap nav-in">
+  <div class="logo"><span class="mk"></span>APEX&nbsp;DETAIL</div>
+  <div class="nav-r"><span class="stat">RATING <b>4.9★</b></span><span class="stat">CARS <b>1,240</b></span><button class="btn btn-cy" onclick="scrollTo({top:document.getElementById('quote').offsetTop-70,behavior:'smooth'})">Build a Quote</button></div>
+</div></nav>
+
+<header><div class="wrap hero">
+  <div>
+    <div class="ey">// Mobile detailing · Leeds LS1–LS28</div>
+    <h1>We bring the<br>showroom <em>to you.</em></h1>
+    <p>Premium mobile detailing at your door. Drag the slider — then build your exact quote and book in under a minute.</p>
+    <div class="row"><button class="btn btn-cy" onclick="scrollTo({top:document.getElementById('quote').offsetTop-70,behavior:'smooth'})">Get instant quote</button><a class="btn btn-o" href="#results">See results</a></div>
+  </div>
+  <div class="ba" id="ba">
+    <img class="before" src="https://images.unsplash.com/photo-1551522435-a13afa10f103?w=900&q=80" alt="before">
+    <img class="after" id="afterImg" src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=900&q=80" alt="after">
+    <div class="tagA">Before</div><div class="tagB">After</div>
+    <div class="handle" id="handle"></div>
+    <div class="knob" id="knob"></div>
+    <div class="hint">⟵ drag to compare ⟶</div>
+  </div>
+</div></header>
+
+<section class="conf" id="quote"><div class="wrap">
+  <div class="conf-head"><h2>Build your <em>instant quote.</em></h2><div class="ey">// Live pricing</div></div>
+  <div class="conf-grid">
+    <div class="panel">
+      <div class="block">
+        <div class="bl"><span>01 — Vehicle size</span></div>
+        <div class="seg" id="sizes"></div>
+      </div>
+      <div class="block">
+        <div class="bl"><span>02 — Package</span></div>
+        <div class="pkgs" id="pkgs"></div>
+      </div>
+      <div class="block">
+        <div class="bl"><span>03 — Add-ons</span><span>optional</span></div>
+        <div class="addons" id="addons"></div>
+      </div>
+    </div>
+
+    <div class="ticket">
+      <div class="tl">// Your quote</div>
+      <div id="lines" style="margin:14px 0"></div>
+      <div class="total"><span class="lab">Total</span><span class="amt" id="amt">£0</span></div>
+      <div class="note">Fully mobile · paid on booking · free cancel 24h before</div>
+      <button class="btn btn-cy full" id="bookBtn" onclick="openDrawer()" disabled>Select a package →</button>
+    </div>
+  </div>
+</div></section>
+
+<section id="results"><div class="hud"><div class="wrap"><div class="hud-grid">
+  <div class="hcell"><div class="n">1,240</div><div class="l">Cars Detailed</div></div>
+  <div class="hcell"><div class="n">4.9★</div><div class="l">Avg Rating</div></div>
+  <div class="hcell"><div class="n">100%</div><div class="l">Mobile Service</div></div>
+  <div class="hcell"><div class="n">12mo</div><div class="l">Ceramic Warranty</div></div>
+</div></div></div></section>
+
+<section class="rev-sec"><div class="wrap">
+  <div class="conf-head"><h2>Booked once, <em>booked again.</em></h2><div class="ey">// Reviews</div></div>
+  <div class="revs">
+    <div class="rev"><div class="s">★★★★★</div><p>"Built my quote, paid, and they showed up on time. Car looks brand new — the slider on the site was no exaggeration."</p><div class="w">DANIEL — LEEDS</div></div>
+    <div class="rev"><div class="s">★★★★★</div><p>"Ceramic coating is unreal. Rain just slides off. The instant quote made it so easy to know the price upfront."</p><div class="w">PRIYA — WAKEFIELD</div></div>
+    <div class="rev"><div class="s">★★★★★</div><p>"Added it straight to my calendar after booking. Proper professional from start to finish."</p><div class="w">TOM — HARROGATE</div></div>
+  </div>
+</div></section>
+
+<footer><div class="wrap foot">
+  <div class="logo"><span class="mk"></span>APEX&nbsp;DETAIL</div>
+  <div>MOBILE · LEEDS LS1–LS28 · 7 DAYS</div>
+  <div>DEMO BY STREIZ STUDIO</div>
+</div></footer>
+
+<div class="scrim" id="scrim" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="dh"><div class="t" id="dt">Book your detail</div><button class="x" onclick="closeDrawer()">✕</button></div>
+  <div class="dsteps"><div class="s on"></div><div class="s"></div><div class="s"></div></div>
+  <div class="db" id="db"></div>
+</div>
+
+<script>
+/* ---- BEFORE/AFTER SLIDER ---- */
+(function(){
+  const ba=document.getElementById('ba'),after=document.getElementById('afterImg'),handle=document.getElementById('handle'),knob=document.getElementById('knob');
+  let drag=false;
+  function set(x){const r=ba.getBoundingClientRect();let p=(x-r.left)/r.width*100;p=Math.max(2,Math.min(98,p));after.style.clipPath=`inset(0 0 0 ${p}%)`;handle.style.left=p+'%';knob.style.left=p+'%';}
+  const start=()=>drag=true,end=()=>drag=false;
+  ba.addEventListener('mousedown',e=>{drag=true;set(e.clientX);});
+  addEventListener('mousemove',e=>{if(drag)set(e.clientX);});
+  addEventListener('mouseup',end);
+  ba.addEventListener('touchstart',e=>{drag=true;set(e.touches[0].clientX);},{passive:true});
+  ba.addEventListener('touchmove',e=>{if(drag)set(e.touches[0].clientX);},{passive:true});
+  addEventListener('touchend',end);
+})();
+
+/* ---- CONFIGURATOR ---- */
+const SIZES=[['S','Small','Hatchback',0],['M','Medium','Saloon',10],['L','Large','Estate/SUV',20],['XL','4×4','Van/7-seat',30]];
+const PKGS=[['Express Refresh','90 min · wash + interior',65],['Full Detail','4 hrs · inside & out',140],['Ceramic Protect','full day · 12-month coat',320]];
+const ADDONS=[['Pet hair removal',25],['Engine bay clean',20],['Ceramic glass',35],['Leather treatment',30]];
+let cfg={size:1,pkg:null,addons:new Set()};
+
+function paint(){
+  document.getElementById('sizes').innerHTML=SIZES.map((s,i)=>`<div class="opt ${cfg.size===i?'sel':''}" onclick="setSize(${i})"><div class="ot">${s[1]}</div><div class="os">${s[2]} ${s[3]?'+£'+s[3]:''}</div></div>`).join('');
+  document.getElementById('pkgs').innerHTML=PKGS.map((p,i)=>`<div class="pkg ${cfg.pkg===i?'sel':''}" onclick="setPkg(${i})"><div><div class="pn">${p[0]}</div><div class="ps">${p[1]}</div></div><div class="pp">£${p[2]}</div></div>`).join('');
+  document.getElementById('addons').innerHTML=ADDONS.map((a,i)=>`<div class="add ${cfg.addons.has(i)?'sel':''}" onclick="tog(${i})"><div class="box">${cfg.addons.has(i)?'✓':''}</div><div class="an">${a[0]}</div><div class="ap">+£${a[1]}</div></div>`).join('');
+  ticket();
+}
+function setSize(i){cfg.size=i;paint();}
+function setPkg(i){cfg.pkg=i;paint();}
+function tog(i){cfg.addons.has(i)?cfg.addons.delete(i):cfg.addons.add(i);paint();}
+function total(){let t=0;if(cfg.pkg!=null)t+=PKGS[cfg.pkg][2];t+=SIZES[cfg.size][3];cfg.addons.forEach(i=>t+=ADDONS[i][1]);return t;}
+function ticket(){
+  const lines=document.getElementById('lines');let html='';
+  if(cfg.pkg!=null)html+=`<div class="tr"><span>${PKGS[cfg.pkg][0]}</span><span>£${PKGS[cfg.pkg][2]}</span></div>`;
+  if(SIZES[cfg.size][3])html+=`<div class="tr"><span>${SIZES[cfg.size][1]} surcharge</span><span>£${SIZES[cfg.size][3]}</span></div>`;
+  cfg.addons.forEach(i=>html+=`<div class="tr"><span>${ADDONS[i][0]}</span><span>£${ADDONS[i][1]}</span></div>`);
+  if(cfg.pkg==null)html=`<div class="tr" style="border:none;color:var(--faint)"><span>Choose a package to begin…</span></div>`;
+  lines.innerHTML=html;
+  const amt=document.getElementById('amt');amt.textContent='£'+total();amt.classList.remove('pulse');void amt.offsetWidth;amt.classList.add('pulse');
+  const btn=document.getElementById('bookBtn');btn.disabled=cfg.pkg==null;btn.textContent=cfg.pkg==null?'Select a package →':`Book this detail · £${total()} →`;
+}
+paint();
+
+/* ---- DRAWER BOOKING ---- */
+const TIMES=['8:00','9:30','11:00','12:30','14:00','15:30'];
+let step=1, sel={dayIdx:null,time:null,name:'',email:''};
+function days(){const o=[],nm=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],t=new Date();for(let i=1;i<=8;i++){const d=new Date(t);d.setDate(t.getDate()+i);o.push({label:nm[d.getDay()],date:d.getDate(),full:d});}return o;}
+function openDrawer(){if(cfg.pkg==null)return;step=1;dr();document.getElementById('scrim').classList.add('on');document.getElementById('drawer').classList.add('on');document.body.style.overflow='hidden';}
+function closeDrawer(){document.getElementById('scrim').classList.remove('on');document.getElementById('drawer').classList.remove('on');document.body.style.overflow='';}
+function dsteps(){document.querySelectorAll('.dsteps .s').forEach((s,i)=>s.classList.toggle('on',i+1<=step));}
+function qsum(){let r='';r+=`<div class="qr"><span>${PKGS[cfg.pkg][0]} · ${SIZES[cfg.size][1]}</span><span>£${PKGS[cfg.pkg][2]+SIZES[cfg.size][3]}</span></div>`;cfg.addons.forEach(i=>r+=`<div class="qr"><span>${ADDONS[i][0]}</span><span>£${ADDONS[i][1]}</span></div>`);r+=`<div class="qt"><span>Total today</span><b>£${total()}</b></div>`;return`<div class="qsum">${r}</div>`;}
+function dr(){dsteps();const b=document.getElementById('db'),dt=document.getElementById('dt');
+  if(step===1){dt.textContent='Pick a slot';b.innerHTML=`<h3>When works for you?</h3><div class="sub">We come to your address.</div>${qsum()}<div class="lb2">Day</div><div class="days">${days().map((d,i)=>`<div class="d ${sel.dayIdx===i?'sel':''}" onclick="pD(${i})"><div class="dn">${d.label}</div><div class="dd">${d.date}</div></div>`).join('')}</div><div class="lb2">Arrival window</div><div class="times">${TIMES.map(t=>`<div class="tm ${sel.time===t?'sel':''}" onclick="pT('${t}')">${t}</div>`).join('')}</div><button class="btn btn-cy full" style="margin-top:20px" onclick="nx()" ${sel.time&&sel.dayIdx!=null?'':'disabled'}>Continue →</button>`;}
+  else if(step===2){dt.textContent='Details & payment';b.innerHTML=`<h3>Almost done</h3><div class="sub">Secure your slot. Free cancellation up to 24h before.</div><div class="fld"><label>Full name</label><input id="iN" value="${sel.name}" placeholder="John Smith"></div><div class="fld"><label>Email</label><input id="iE" value="${sel.email}" placeholder="you@email.com"></div><div class="fld"><label>Service address</label><input placeholder="Where should we come?"></div><div class="fld"><label>Card number</label><input placeholder="4242 4242 4242 4242"></div><div class="row2"><div class="fld"><label>Expiry</label><input placeholder="MM / YY"></div><div class="fld"><label>CVC</label><input placeholder="123"></div></div>${qsum()}<div style="display:flex;gap:8px;margin-bottom:10px"><span class="badge">VISA</span><span class="badge">MASTERCARD</span><span class="badge">APPLE PAY</span></div><button class="btn btn-cy full" onclick="pay()">Pay £${total()} & confirm</button><div class="secure">🔒 DEMO CHECKOUT — NO REAL PAYMENT TAKEN</div>`;}
+  else{const d=days()[sel.dayIdx].full,link=gcal(d,sel.time);dt.textContent='Confirmed';b.innerHTML=`<div class="done"><div class="ck">✓</div><h3>Booking confirmed.</h3><div class="sub">Confirmation on its way to ${sel.email||'your email'}.</div>${qsum()}<div class="qr" style="justify-content:center;margin-bottom:14px;color:var(--mut)">${days()[sel.dayIdx].label} ${days()[sel.dayIdx].date} · ${sel.time}</div><a class="gcal" href="${link}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Add to Google Calendar</a><div style="margin-top:16px"><button class="btn btn-o" onclick="closeDrawer()">Done</button></div></div>`;}
+}
+function pD(i){sel.dayIdx=i;dr();}
+function pT(t){sel.time=t;dr();}
+function nx(){step++;dr();}
+function pay(){sel.name=document.getElementById('iN').value;sel.email=document.getElementById('iE').value;step=3;dr();}
+function gcal(dt,time){const[h,m]=time.split(':').map(Number);const s=new Date(dt);s.setHours(h,m,0,0);const e=new Date(s);e.setHours(s.getHours()+2);const f=d=>d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';const title=PKGS[cfg.pkg][0]+' ('+SIZES[cfg.size][1]+')';return`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Apex Detail — '+title)}&dates=${f(s)}/${f(e)}&details=${encodeURIComponent('Booked via Apex Detail (demo by Streiz Studio). Total £'+total())}&location=${encodeURIComponent('Your address · Leeds')}`;}
+</script>
+</body>
+</html>
